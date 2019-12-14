@@ -1,5 +1,7 @@
 # MyPL
 
+[![Build Status](https://travis-ci.com/GuiBrandt/MyPL.svg?token=fMTgwJBkrcocEckf28eZ&branch=master)](https://travis-ci.com/GuiBrandt/MyPL)
+
 This is a programming language.
 
 ## Q&A
