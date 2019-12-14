@@ -8,9 +8,9 @@ void test_advances_pointer() {
     next_token(&length, &string);
 
     if (string[0] == 'd')
-        printf("ok 1 - tokenizer advances\n");
+        printf("ok - tokenizer advances\n");
     else
-        printf("not ok 1 - tokenizer does not advance #TODO\n");
+        printf("not ok - tokenizer does not advance #TODO\n");
 }
 
 void test_updates_length() {
@@ -19,38 +19,207 @@ void test_updates_length() {
     next_token(&length, &string);
     
     if (length == 16)
-        printf("ok 2 - tokenizer updates string length\n");
+        printf("ok - tokenizer updates string length\n");
     else
-        printf("not ok 2 - tokenizer does not update string length #TODO\n");
+        printf("not ok - tokenizer does not update string length #TODO\n");
 }
 
 void test_gets_word() {
     int length = 20;
     char const* string = "abc defgh ijklm nop";
+
     token t = next_token(&length, &string);
     
-    if (memcmp(t.value.small.data, "abc", t.value.small.length) == 0)
-        printf("ok 3 - tokenizer gets word\n");
-    else
-        printf("not ok 3 - tokenizer does not get a word #TODO\n");
+    if (t.value.small.length != 3 ||
+        memcmp(t.value.small.data, "abc", 3) != 0) {
+        printf("not ok - tokenizer does not get a word #TODO\n");
+        return;
+    } else if (t.type != TOKEN_NAME) {
+        printf("not ok - mismatched token type #TODO\n");
+        return;
+    }
+    
+    t = next_token(&length, &string);
+
+    if (t.value.small.length != 5 ||
+        memcmp(t.value.small.data, "defgh", 5) != 0) {
+        printf("not ok - tokenizer does not get a word #TODO\n");
+        return;
+    } else if (t.type != TOKEN_NAME) {
+        printf("not ok - mismatched token type\n");
+        return;
+    }
+    
+    printf("ok - tokenizer gets word\n");
 }
 
 void test_splits_on_symbol() {
-    int length = 20;
+    int length = 10;
     char const* string = "abc+defgh";
     token t = next_token(&length, &string);
     
-    if (strcmp(t.value.small.data, "abc") == 0)
-        printf("ok 4 - tokenizer splits tokens on symbols\n");
+    if (t.value.small.length == 3 && memcmp(t.value.small.data, "abc", 3) == 0)
+        printf("ok - tokenizer splits tokens on symbols\n");
     else
-        printf("not ok 4 - tokenizer does not treat symbols #TODO\n");
+        printf("not ok - tokenizer does not treat symbols #TODO\n");
+}
+
+void test_gets_alnum() {
+    int length = 13;
+    char const* string = "abc123 defgh";
+    token t = next_token(&length, &string);
+    
+    if (t.value.small.length != 2 || memcmp(t.value.small.data, "+=", 2) != 0) {
+        printf("not ok - tokenizer does not get alphanumeric tokens #TODO\n");
+        return;
+    }
+
+    if (t.type != TOKEN_NAME) {
+        printf("not ok - mismatched token type\n");
+        return;
+    }
+    
+    printf("ok - tokenizer gets alphanumeric tokens\n");
+}
+
+void test_merges_operators() {
+    int length = 9;
+    char const* string = "+= defgh";
+    token t = next_token(&length, &string);
+    
+    if (t.value.small.length != 2 || memcmp(t.value.small.data, "+=", 2) != 0) {
+        printf("not ok - tokenizer does not merge operators #TODO\n");
+        return;
+    }
+
+    if (t.type != TOKEN_OPERATOR) {
+        printf("not ok - mismatched token type\n");
+        return;
+    }
+    
+    printf("ok - tokenizer merges operators\n");
+}
+
+void test_gets_number() {
+    int length = 12;
+    char const* string = "12345 defgh";
+
+    token t = next_token(&length, &string);
+    
+    if (t.value.small.length == 5 &&
+        memcmp(t.value.small.data, "12345", 5) == 0)
+        printf("ok - tokenizer gets numeric tokens\n");
+    else
+        printf("not ok - tokenizer does not get numeric tokens #TODO\n");
+}
+
+void test_gets_symbol() {
+    int length = 8;
+    char const* string = "( defgh";
+
+    token t = next_token(&length, &string);
+    
+    if (t.value.small.length != 1 || memcmp(t.value.small.data, "(", 1) != 0) {
+        printf("not ok - tokenizer does not get symbol tokens #TODO\n");
+        return;
+    }
+
+    if (t.type != TOKEN_SYMBOL) {
+        printf("not ok - mismatched token type\n");
+        return;
+    }
+    
+    printf("ok - tokenizer gets symbol tokens\n");
+}
+
+void test_gets_string() {
+    int length = 17;
+    char const* string = "\"abc defg\" hijkl";
+
+    token t = next_token(&length, &string);
+    
+    if (t.value.small.length != 8 ||
+        memcmp(t.value.small.data, "abc defg", 8) != 0) {
+        printf("not ok - tokenizer does not get string tokens #TODO\n");
+        return;
+    }
+
+    if (t.type != TOKEN_STRING) {
+        printf("not ok - mismatched token type\n");
+        return;
+    }
+
+    printf("ok - tokenizer gets string tokens\n");
+}
+
+void test_linebreak() {
+    int length = 28;
+    char const* string = "abc\nghi";
+
+    next_token(&length, &string);
+    token t = next_token(&length, &string);
+
+    if (t.type != TOKEN_LINEBREAK) {
+        printf("not ok - tokenizer does not yield linebreak token #TODO\n");
+        return;
+    }
+
+    t = next_token(&length, &string);
+    if (t.value.small.length != 3 ||
+        memcmp(t.value.small.data, "ghi", 3) != 0) {
+        printf("not ok - does not get token after linebreak\n");
+        return;
+    }
+    
+    printf("ok - linebreaks work\n");
+}
+
+void test_gets_comment() {
+    int length = 28;
+    char const* string = "# abc def\nghi jkl";
+
+    token t = next_token(&length, &string);
+    
+    if (t.value.small.length != 8 ||
+        memcmp(t.value.small.data, " abc def", 8) != 0) {
+        printf("not ok - tokenizer does not get comments #TODO\n");
+        return;
+    }
+
+    if (t.type != TOKEN_COMMENT) {
+        printf("not ok - mismatched token type\n");
+        return;
+    }
+
+    t = next_token(&length, &string);
+    if (t.type != TOKEN_LINEBREAK) {
+        printf("not ok - tokenizer does not yield linebreak token after"
+               " comment\n");
+        return;
+    }
+
+    t = next_token(&length, &string);
+    if (t.value.small.length != 3 ||
+        memcmp(t.value.small.data, "ghi", 3) != 0) {
+        printf("not ok - does not get token after comment\n");
+        return;
+    }
+    
+    printf("ok - tokenizer gets comment tokens\n");
 }
 
 int main(int argc, char** argv) {
-    printf("1..4\n");
+    printf("1..11\n");
     test_advances_pointer();
     test_updates_length();
     test_gets_word();
     test_splits_on_symbol();
+    test_gets_alnum();
+    test_merges_operators();
+    test_gets_number();
+    test_gets_symbol();
+    test_gets_string();
+    test_gets_comment();
+    test_linebreak();
     return 0;
 }
