@@ -1,0 +1,8 @@
+all:
+	aclocal -I m4
+	libtoolize --force || glibtoolize --force
+	automake -a --foreign
+	autoconf
+
+configure:
+	./configure
