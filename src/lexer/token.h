@@ -24,6 +24,8 @@
 
 #ifndef __MYPL_TOKEN_H__
 
+#include <stddef.h>
+
 /** Token type enumeration.
  * 
  * - `TOKEN_NAME`: Identifiers, such as variable names.
@@ -107,12 +109,13 @@ typedef struct _token {
  * the next token or the end of the string, as well as change the length
  * pointer accordingly.
  * 
- * @param length a pointer to the string length.
- * @param string a pointer to the string.
+ * @param string the string.
+ * @param length the string length.
+ * @param out an output pointer to a token. If 0, the token will be skipped.
  * 
- * @return token
+ * @return size_t number of bytes to the next token.
  * 
  */
-token next_token(unsigned int* const length, char const** const string);
+size_t next_token(const char* string, size_t length, token* out);
 
 #endif // __MYPL_TOKEN_H__

@@ -1,7 +1,5 @@
 #include "token.h"
 
-token next_token(unsigned int* const length, char const** const string) {
-    token tk;
-    
-    return tk;
+size_t next_token(const char* string, size_t length, token* tk) {
+    return 0;
 }
