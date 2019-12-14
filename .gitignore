@@ -33,6 +33,7 @@ autom4te.cache
 
 # https://www.gnu.org/software/libtool/
 
+libtool
 /ltmain.sh
 
 # http://www.gnu.org/software/texinfo
@@ -105,10 +106,6 @@ dkms.conf
 
 ### VisualStudioCode ###
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
 
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
@@ -120,3 +117,9 @@ Makefile
 .deps
 .dirstamp
 docs
+
+*.log
+
+tap-driver.sh
+
+build-aux
