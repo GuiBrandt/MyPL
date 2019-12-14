@@ -39,30 +39,27 @@
  * The values here are specially assigned in a way that checks can be done
  * efficiently later with some bit-masking.
  * 
- * `TOKEN_LARGE` and `TOKEN_BREAKING` are not possible values, and only exist
- * to make token properties more clear.
+ * `TOKEN_LARGE` is not a possible value, and only exists to make token
+ * properties more clear.
  * 
  * Internally, `TOKEN_LARGE` marks tokens that are possible larger than 255
- * bytes, and `TOKEN_BREAKING` marks tokens that indicate token breaks (e.g.
- * symbols, when written immediately after names, should end the name token
- * processing and start its own token).
+ * bytes.
  * 
  */
-typedef enum _token_type {
+enum _token_type {
     TOKEN_NAME      = 0x00,
     TOKEN_KEYWORD   = 0x01,
-    TOKEN_BREAKING  = 0x10,
-    TOKEN_LITERAL   = 0x20,
-    TOKEN_LARGE     = 0x40,
-    TOKEN_SYMBOL    = TOKEN_BREAKING | 0x01,
-    TOKEN_OPERATOR  = TOKEN_BREAKING | 0x02,
-    TOKEN_LINEBREAK = TOKEN_BREAKING | 0x03,
+    TOKEN_SYMBOL    = 0x02,
+    TOKEN_OPERATOR  = 0x03,
+    TOKEN_LINEBREAK = 0x04,
+    TOKEN_LITERAL   = 0x10,
+    TOKEN_LARGE     = 0x20,
     TOKEN_STRING    = TOKEN_LITERAL  | TOKEN_LARGE,
-    TOKEN_COMMENT   = TOKEN_BREAKING | TOKEN_LARGE
-} token_type;
+    TOKEN_COMMENT   = TOKEN_LARGE
+};
 
 /** Token value union. */
-typedef union _token_value {
+union _token_value {
     /** Small token value (default).
      * 
      * Usually, tokens won't need more than 255 bytes.
@@ -96,12 +93,12 @@ typedef union _token_value {
          */
         struct _block* next;  
     } large;
-} token_value;
+};
 
 /** A token. */
 typedef struct _token {
-    token_type type;
-    token_value value;
+    enum _token_type type;
+    union _token_value value;
 } token;
 
 /** Consumes the next token on a string.
