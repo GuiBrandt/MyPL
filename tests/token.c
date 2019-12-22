@@ -10,7 +10,7 @@ void test_advances_pointer() {
     if (string[i] == 'd')
         printf("ok - tokenizer advances\n");
     else
-        printf("not ok - tokenizer does not advance # TODO\n");
+        printf("not ok - tokenizer does not advance\n");
 }
 
 void test_gets_word() {
@@ -24,10 +24,10 @@ void test_gets_word() {
     
     if (t.value.small.length != 3 ||
         memcmp(t.value.small.data, "abc", 3) != 0) {
-        printf("not ok - tokenizer does not get a word # TODO\n");
+        printf("not ok - tokenizer does not get a word\n");
         return;
     } else if (t.type != TOKEN_NAME) {
-        printf("not ok - mismatched token type\n");
+        printf("not ok - mismatched token type (expected name)\n");
         return;
     }
     
@@ -38,7 +38,7 @@ void test_gets_word() {
         printf("not ok - tokenizer does not get a word\n");
         return;
     } else if (t.type != TOKEN_NAME) {
-        printf("not ok - mismatched token type\n");
+        printf("not ok - mismatched token type (expected name)\n");
         return;
     }
     
@@ -55,7 +55,7 @@ void test_splits_on_symbol() {
     if (t.value.small.length == 3 && memcmp(t.value.small.data, "abc", 3) == 0)
         printf("ok - tokenizer splits tokens on symbols\n");
     else
-        printf("not ok - tokenizer does not treat symbols #TODO\n");
+        printf("not ok - tokenizer does not treat symbols\n");
 }
 
 void test_gets_alnum() {
@@ -67,12 +67,12 @@ void test_gets_alnum() {
     
     if (t.value.small.length != 6 ||
         memcmp(t.value.small.data, "abc123", 6) != 0) {
-        printf("not ok - tokenizer does not get alphanumeric tokens # TODO\n");
+        printf("not ok - tokenizer does not get alphanumeric tokens\n");
         return;
     }
 
     if (t.type != TOKEN_NAME) {
-        printf("not ok - mismatched token type\n");
+        printf("not ok - mismatched token type (expected name)\n");
         return;
     }
     
@@ -92,7 +92,7 @@ void test_merges_operators() {
     }
 
     if (t.type != TOKEN_OPERATOR) {
-        printf("not ok - mismatched token type\n");
+        printf("not ok - mismatched token type (expected operator)\n");
         return;
     }
     
@@ -113,8 +113,8 @@ void test_gets_number() {
     }
 
     if (t.type != TOKEN_LITERAL) {
-        printf("not ok - mismatched token type # TODO: differentiate between"
-               " names and literals\n");
+        printf("not ok - mismatched token type (expected literal) # TODO: "
+               "differentiate between names and literals\n");
         return;
     }
 
@@ -129,12 +129,12 @@ void test_gets_symbol() {
     next_token(string, length, &t);
     
     if (t.value.small.length != 1 || memcmp(t.value.small.data, "(", 1) != 0) {
-        printf("not ok - tokenizer does not get symbol tokens #TODO\n");
+        printf("not ok - tokenizer does not get symbol tokens\n");
         return;
     }
 
     if (t.type != TOKEN_SYMBOL) {
-        printf("not ok - mismatched token type\n");
+        printf("not ok - mismatched token type (expected symbol) #TODO\n");
         return;
     }
     
@@ -155,7 +155,7 @@ void test_gets_string() {
     }
 
     if (t.type != TOKEN_STRING) {
-        printf("not ok - mismatched token type\n");
+        printf("not ok - mismatched token type (expected string)\n");
         return;
     }
 
@@ -204,7 +204,7 @@ void test_gets_comment() {
     }
 
     if (t.type != TOKEN_COMMENT) {
-        printf("not ok - mismatched token type\n");
+        printf("not ok - mismatched token type (expected comment)\n");
         return;
     }
 
