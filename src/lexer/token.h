@@ -99,8 +99,8 @@ union _token_value {
 
 /** A token. */
 typedef struct _token {
-    enum _token_type type;
-    union _token_value value;
+    enum _token_type type; /**< Token type */
+    union _token_value value; /**< Token contents */
 } token;
 
 /** Consumes the next token on a string.
