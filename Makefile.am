@@ -1,18 +1,18 @@
 bin_PROGRAMS = pl lex parse
 
-noinst_LIBRARIES = lexer parser
+noinst_LIBRARIES = liblexer.a libparser.a
 
-lexer_SOURCES = src/lexer/token.c
-parser_SOURCES = 
+liblexer_a_SOURCES = src/lexer/token.c
+libparser_a_SOURCES = 
 
 lex_SOURCES = src/lexer/main.c
-lex_LDADD = lexer
+lex_LDADD = liblexer.a
 
 parse_SOURCES = src/parser/main.c
-parse_LDADD = parser
+parse_LDADD = libparser.a
 
 pl_SOURCES = src/main.c
-pl_LDADD = lexer parser
+pl_LDADD = liblexer.a libparser.a
 
 SUBDIRS = tests
 
