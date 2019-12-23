@@ -23,6 +23,7 @@
  */
 
 #ifndef __MYPL_TOKEN_H__
+#define __MYPL_TOKEN_H__
 
 #include <stddef.h>
 
@@ -111,7 +112,8 @@ typedef struct _token {
  * 
  * @param string the string.
  * @param length the string length.
- * @param out an output pointer to a token. If 0, the token will be skipped.
+ * @param out an output pointer to a token. If this is NULL, the token will be
+ *            skipped.
  * 
  * @return size_t number of bytes to the next token.
  * 
