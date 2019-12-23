@@ -1,7 +1,8 @@
 bin_PROGRAMS = pl lex parse
 
-noinst_LIBRARIES = liblexer.a libparser.a
+noinst_LIBRARIES = liblexer.a libparser.a libutil.a
 
+libutil_a_SOURCES = src/util/trie_set.c
 liblexer_a_SOURCES = src/lexer/token.c
 libparser_a_SOURCES = 
 
