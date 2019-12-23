@@ -87,12 +87,12 @@ void test_merges_operators() {
     next_token(string, length, &t);
     
     if (t.value.small.length != 2 || memcmp(t.value.small.data, "+=", 2) != 0) {
-        printf("not ok - tokenizer does not merge operators #TODO\n");
+        printf("not ok - tokenizer does not merge operators\n");
         return;
     }
 
     if (t.type != TOKEN_OPERATOR) {
-        printf("not ok - mismatched token type (expected operator)\n");
+        printf("not ok - mismatched token type (expected operator) #TODO\n");
         return;
     }
     
