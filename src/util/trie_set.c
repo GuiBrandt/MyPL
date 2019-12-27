@@ -17,14 +17,14 @@ void trie_add(trie_set* t, const char* string) {
     t->exists = true;
 }
 
-bool trie_contains(trie_set* t, const char* string) {
-    for (int i = 0; string[i]; i++) {
-        char c = string[i];
-
-        if (!t->children[c])
-            return false;
-
+bool trie_contains(register trie_set* t, register const char* string) {
+    for (register int i = 0; string[i]; i++) {
+        register char c = string[i];
+        
         t = t->children[c];
+
+        if (!t)
+            return false;        
     }
     return t->exists;
 }
