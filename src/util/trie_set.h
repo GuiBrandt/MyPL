@@ -34,9 +34,6 @@
  * 
  * For practical reasons, a set is actually node of the trie itself.
  * 
- * FIXME: Maybe make a fixed amount of levels aligned in memory, as a way to
- * optimize cache hits. 
- * 
  */
 typedef struct _trie_set {
     struct _trie_set* children[256]; /**< Pointers to this node's children. */
@@ -57,6 +54,8 @@ void trie_add(trie_set* out, const char* string);
  * 
  * @param t Trie set.
  * @param string the string.
+ * 
+ * @return bool whether the set contains the given string.
  * 
  */
 bool trie_contains(trie_set* t, const char* string);
