@@ -21,6 +21,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /** A splay tree.
  * 
  * A tree is actually just a pointer to the root node. With this, we can change
@@ -60,5 +64,9 @@ void* splay_get(splay_tree* t, register uint_fast8_t key);
  * 
  */
 void splay_free(splay_tree* t);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // __MYPL_SPLAY_TREE_H__

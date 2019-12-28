@@ -25,6 +25,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct __avl_tree_node {
     uint_fast8_t key; /**< Stored key. */
     uint_fast8_t height; /**< Tree height. */
@@ -58,5 +62,9 @@ void* avl_get(avl_tree* t, register uint_fast8_t key);
  * 
  */
 void avl_free(avl_tree* t);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // __MYPL_AVL_TREE_H__

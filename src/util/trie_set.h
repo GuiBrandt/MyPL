@@ -30,6 +30,10 @@
 
 #include <stdbool.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /** A Trie set. 
  * 
  * For practical reasons, a set is actually node of the trie itself.
@@ -60,11 +64,25 @@ void trie_add(trie_set* out, const char* string);
  */
 bool trie_contains(trie_set* t, const char* string);
 
+/** Checks if the set contains a given prefix.
+ * 
+ * @param t Trie set.
+ * @param string the prefix.
+ * 
+ * @return bool whether the set contains the given string.
+ * 
+ */
+bool trie_contains_prefix(trie_set* t, const char* string);
+
 /** Frees the memory allocated into the set.
  * 
  * @param t Trie set.
  * 
  */
 void trie_free(trie_set* t);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // __MYPL_TRIESET_H__

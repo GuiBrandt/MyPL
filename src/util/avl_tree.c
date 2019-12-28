@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 
-inline avl_tree new_node(int_fast8_t key, void* value, avl_tree parent) {
+avl_tree new_avl_node(int_fast8_t key, void* value, avl_tree parent) {
     avl_tree node = (avl_tree)malloc(sizeof(struct __avl_tree_node));
     node->key = key;
     node->value = value;
@@ -12,7 +12,7 @@ inline avl_tree new_node(int_fast8_t key, void* value, avl_tree parent) {
     return node;
 }
 
-inline int balance_factor(avl_tree node) {
+int balance_factor(avl_tree node) {
     return (node->right ? node->right->height : 0) -
             (node->left ? node->left->height : 0);
 }
@@ -66,7 +66,7 @@ void avl_left_rotate(register avl_tree node, avl_tree* tree) {
 void avl_add(avl_tree* tree, uint_fast8_t key, void* value) {
     avl_tree node = *tree;
     if (!node) {
-        *tree = new_node(key, value, NULL);
+        *tree = new_avl_node(key, value, NULL);
         return;
     }
 
@@ -84,7 +84,7 @@ void avl_add(avl_tree* tree, uint_fast8_t key, void* value) {
         }
     }
 
-    node = new_node(key, value, parent);
+    node = new_avl_node(key, value, parent);
     if (key < parent->key)
         parent->left = node;
     else

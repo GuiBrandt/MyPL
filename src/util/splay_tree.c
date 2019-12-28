@@ -4,7 +4,7 @@
 
 void splay(splay_tree node, splay_tree* tree);
 
-inline splay_tree new_node(uint_fast8_t key, void* value, splay_tree parent) {
+splay_tree new_splay_node(uint_fast8_t key, void* value, splay_tree parent) {
     splay_tree node = (splay_tree)malloc(sizeof(struct __splay_tree_node));
     node->key = key;
     node->value = value;
@@ -16,7 +16,7 @@ inline splay_tree new_node(uint_fast8_t key, void* value, splay_tree parent) {
 void splay_add(splay_tree* tree, uint_fast8_t key, void* value) {
     splay_tree node = *tree;
     if (!node) {
-        *tree = new_node(key, value, NULL);
+        *tree = new_splay_node(key, value, NULL);
         return;
     }
 
@@ -32,7 +32,7 @@ void splay_add(splay_tree* tree, uint_fast8_t key, void* value) {
             node = node->left;
     }
 
-    node = new_node(key, value, parent);
+    node = new_splay_node(key, value, parent);
 
     if (key < parent->key)
         parent->left = node;
