@@ -17,16 +17,26 @@ void trie_add(trie_set* t, const char* string) {
     t->exists = true;
 }
 
-bool trie_contains(register trie_set* t, register const char* string) {
+trie_set* _find(register trie_set* t, register const char* string) {
     for (register int i = 0; string[i]; i++) {
         register char c = string[i];
         
         t = t->children[c];
 
         if (!t)
-            return false;        
+            return NULL;        
     }
-    return t->exists;
+    return t;
+}
+
+bool trie_contains(register trie_set* t, register const char* string) {
+    t = _find(t, string);
+    return t && t->exists;
+}
+
+bool trie_contains_prefix(register trie_set* t, register const char* string) {
+    t = _find(t, string);
+    return t != NULL;
 }
 
 void trie_free(trie_set* t) {

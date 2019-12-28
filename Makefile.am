@@ -1,14 +1,21 @@
-bin_PROGRAMS = pl lex parse
+bin_PROGRAMS = pl lex parse util
+CFLAGS = -I./src
 
 noinst_LIBRARIES = liblexer.a libparser.a libutil.a
 
 libutil_a_SOURCES = src/util/trie_set.c src/util/splay_tree.c\
                     src/util/avl_tree.c
+
 liblexer_a_SOURCES = src/lexer/token.c
+liblexer_a_LIBADD = libutil.a
+
 libparser_a_SOURCES = 
 
 lex_SOURCES = src/lexer/main.c
-lex_LDADD = liblexer.a
+lex_LDADD = liblexer.a libutil.a
+
+util_SOURCES = src/util/main.c
+util_LDADD = libutil.a
 
 parse_SOURCES = src/parser/main.c
 parse_LDADD = libparser.a
