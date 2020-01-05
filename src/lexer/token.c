@@ -10,14 +10,14 @@ bool issymbol(char c) { return c != '_' && ispunct(c); }
 bool isoperator(const char* c);
 bool potential_operator(const char* c);
 
-size_t next_token(const char* string, size_t length, token* tk) {
+size_t next_token(register const char* string, register size_t length, token* tk) {
     if (tk)
         tk->type = TOKEN_NAME;
 
-    size_t i, skip = 0;
+    register size_t i, skip = 0;
 
     for (i = 0; i + skip < length; i++) {
-        char c = string[i + skip];
+        register char c = string[i + skip];
 
         if (c == '"') {
             // TODO: String
@@ -38,7 +38,7 @@ size_t next_token(const char* string, size_t length, token* tk) {
                 break;
 
             char val[4] = {0};
-            size_t j;
+            register size_t j;
 
             for (j = 0;
                  j < 4 && i < length && issymbol(string[i + skip]);
