@@ -423,3 +423,6 @@ MigrationBackup/
 
 build/
 docs/
+
+coverage/
+cov.xml
