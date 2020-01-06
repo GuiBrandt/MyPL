@@ -1,8 +1,9 @@
 include_directories(include)
 
 add_subdirectory(util)
+add_subdirectory(common)
 
-link_libraries(util)
+link_libraries(util common)
 
 add_subdirectory(lexer)
 add_subdirectory(parser)
