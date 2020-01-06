@@ -27,6 +27,7 @@ size_t next_token(register const char* string, register size_t length, token* tk
     if (tk) {
         tk->value.small.length = 0;
         tk->type = TOKEN_NAME;
+        tk->value.large.next = NULL;
     }
 
     register size_t i, skip = 0;
@@ -101,6 +102,20 @@ size_t next_token(register const char* string, register size_t length, token* tk
     return i + skip;
 }
 
+void free_large_token_block(large_token_block* block);
+
+void free_token(token* tk) {
+    if (!tk->value.large.next)
+        return;
+    free_large_token_block(tk->value.large.next);
+}
+
+void free_large_token_block(large_token_block* block) {
+    if (block->next)
+        free_large_token_block(block->next);
+    free(block);
+}
+
 trie_set operators;
 
 inline bool isoperator(const char* string) {
@@ -133,7 +148,6 @@ size_t read_large_token(
     if (tk) {
         block = &tk->value.large;
         block->length = 0;
-        block->next = NULL;
     }
 
     bool escape = false;
