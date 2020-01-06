@@ -1,0 +1,1 @@
+add_library(common OBJECT errors.c)
