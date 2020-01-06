@@ -21,12 +21,5 @@ int main() {
     length -= i;
     assert(t.type == TOKEN_LINEBREAK);
 
-    i = next_token(string, length, &t);
-    string += i;
-    length -= i;
-
-    assert(t.value.small.length == 3);
-    assert(memcmp(t.value.small.data, "ghi", 3) == 0);
-
     return 0;
 }

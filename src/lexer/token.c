@@ -60,7 +60,46 @@ size_t next_token(register const char* string, register size_t length, token* tk
                 tk->type = TOKEN_STRING;
             break;
         } else if (c == '#') {
-            // TODO: Comment
+            large_token_block* block = &tk->value.large;
+
+            bool escape = false;
+
+            for (skip++; escape || string[i + skip] != '\n'; i++) {
+                if (i + skip >= length)
+                    exit(-1);
+
+                if (string[i + skip] == '\\')
+                    escape ^= true;
+                else
+                    escape = false;
+
+                if (!tk)
+                    continue;
+                
+                if (block->length < sizeof(block->data)) {
+                    block->data[i] = string[i + skip];
+                    block->length++;
+                } else {
+                    large_token_block* next = (large_token_block*)malloc(sizeof(large_token_block));
+                    next->length = 0;
+                    next->next = NULL;
+                    block->next = next;
+                    block = next;
+                }
+            }
+
+            if (tk)
+                tk->type = TOKEN_COMMENT;
+            break;
+        } else if (c == '\n') {
+            if (i > 0)
+                break;
+
+            skip++;
+            
+            if (tk)
+                tk->type = TOKEN_LINEBREAK;
+            break;
         } else if (isspace(c)) {
             while (i + skip < length && isspace(string[i + skip]))
                 skip++;
