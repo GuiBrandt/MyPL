@@ -8,11 +8,11 @@
 
 #include "token.h"
 
-bool issymbol(char c) { return c != '_' && ispunct(c); }
-bool isoperator(const char* c);
-bool potential_operator(const char* c);
+static bool issymbol(char c) { return c != '_' && ispunct(c); }
+static bool isoperator(const char* c);
+static bool potential_operator(const char* c);
 
-size_t read_large_token(
+static size_t read_large_token(
     register const char* string,
     register size_t length,
     register size_t i,
@@ -30,6 +30,13 @@ size_t next_token(register const char* string, register size_t length, token* tk
     }
 
     register size_t i, skip = 0;
+
+    if (string[0] != '\n' && isspace(string[0]))
+        while (skip < length && isspace(string[skip]))
+            skip++;
+
+    if (tk && isdigit(string[skip]))
+        tk->type = TOKEN_LITERAL;
 
     for (i = 0; i + skip < length; i++) {
         register char c = string[i + skip];
@@ -61,13 +68,8 @@ size_t next_token(register const char* string, register size_t length, token* tk
         } else if (isspace(c)) {
             while (i + skip < length && isspace(string[i + skip]))
                 skip++;
-            
-            if (i > 0)
-                break;
-            else {
-                i--;
-                continue;
-            }
+
+            break;
         } else if (issymbol(c)) {
             if (i > 0)
                 break;
