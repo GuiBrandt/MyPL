@@ -41,6 +41,7 @@ int main() {
         block = block->next;
     }
     assert(t.type == TOKEN_STRING);
+    free_token(&t);
 
     next_token(string, length, &t);
 

@@ -120,4 +120,14 @@ typedef struct _token {
  */
 size_t next_token(const char* string, size_t length, token* out);
 
+/** Frees allocated memory for a token.
+ * 
+ * This function will free all blocks created for a large token.
+ * It WILL NOT free the given pointer.
+ * 
+ * @param tk pointer to the token. Notice this pointer will not be freed.
+ * 
+ */
+void free_token(token* tk);
+
 #endif // __MYPL_TOKEN_H__
