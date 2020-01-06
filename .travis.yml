@@ -1,10 +1,13 @@
 language: c
-compiler: gcc
-before_install:
-  - autoreconf --install
-install:
-  - aclocal
-  - autoconf
-  - automake
+
+compiler:
+  - gcc
+
+before_script:
+  - mkdir build
+  - cd build
+  - cmake ..
+
 script:
-  ./configure && make && make check
+  - make
+  - make test

@@ -1,0 +1,1 @@
+add_library(util OBJECT avl_tree.c splay_tree.c trie_set.c)

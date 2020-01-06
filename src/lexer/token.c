@@ -4,7 +4,7 @@
 
 #include <util/trie_set.h>
 
-#include "token.h"
+#include <lexer/token.h>
 
 bool issymbol(char c) { return c != '_' && ispunct(c); }
 bool isoperator(const char* c);

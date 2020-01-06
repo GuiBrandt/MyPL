@@ -1,4 +1,4 @@
-#include "avl_tree.h"
+#include <util/avl_tree.h>
 
 #include <stdlib.h>
 

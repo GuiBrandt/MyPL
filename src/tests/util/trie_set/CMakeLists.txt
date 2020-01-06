@@ -1,0 +1,1 @@
+discover_tests(util trie_set)
