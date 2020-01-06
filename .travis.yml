@@ -1,10 +1,5 @@
 language: c
 
-branches:
-  only:
-    - master
-    - development
-
 compiler:
   - gcc
 
