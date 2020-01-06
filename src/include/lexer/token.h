@@ -23,6 +23,7 @@
  */
 
 #ifndef __MYPL_TOKEN_H__
+#define __MYPL_TOKEN_H__
 
 #include <stddef.h>
 
@@ -84,7 +85,7 @@ union _token_value {
      * eventually writing them out somewhere else.
      * 
      */
-    struct _block {
+    struct _large_token_block {
         unsigned char length; /**< Block length. */
         char data[255]; /**< Block value. */
 
@@ -93,14 +94,14 @@ union _token_value {
          * This should be 0 if this is the last block on the string.
          * 
          */
-        struct _block* next;  
+        struct _large_token_block* next;  
     } large;
 };
 
 /** A token. */
 typedef struct _token {
-    enum _token_type type;
-    union _token_value value;
+    enum _token_type type; /**< Token type */
+    union _token_value value; /**< Token contents */
 } token;
 
 /** Consumes the next token on a string.
@@ -111,11 +112,22 @@ typedef struct _token {
  * 
  * @param string the string.
  * @param length the string length.
- * @param out an output pointer to a token. If 0, the token will be skipped.
+ * @param out an output pointer to a token. If this is NULL, the token will be
+ *            skipped.
  * 
  * @return size_t number of bytes to the next token.
  * 
  */
 size_t next_token(const char* string, size_t length, token* out);
+
+/** Frees allocated memory for a token.
+ * 
+ * This function will free all blocks created for a large token.
+ * It WILL NOT free the given pointer.
+ * 
+ * @param tk pointer to the token. Notice this pointer will not be freed.
+ * 
+ */
+void free_token(token* tk);
 
 #endif // __MYPL_TOKEN_H__

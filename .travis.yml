@@ -1,5 +1,9 @@
 language: c
 
+addons:
+  apt:
+    packages: gcovr
+
 branches:
   only:
     - master
@@ -16,3 +20,6 @@ before_script:
 script:
   - make
   - make test
+
+after_success:
+- bash <(curl -s https://codecov.io/bash) -f "!*/tests/**/*" || echo "Codecov did not collect coverage reports"

@@ -1,6 +1,7 @@
 # MyPL
 
 [![Build Status](https://travis-ci.com/GuiBrandt/MyPL.svg?token=fMTgwJBkrcocEckf28eZ&branch=master)](https://travis-ci.com/GuiBrandt/MyPL)
+[![codecov](https://codecov.io/gh/GuiBrandt/MyPL/branch/master/graph/badge.svg)](https://codecov.io/gh/GuiBrandt/MyPL)
 
 This is a programming language.
 
