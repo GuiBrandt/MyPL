@@ -8,9 +8,9 @@
 
 #include <lexer/token.h>
 
-static bool issymbol(char c) { return c != '_' && ispunct(c); }
-static bool isoperator(const char* c);
-static bool potential_operator(const char* c);
+static inline bool issymbol(char c) { return c != '_' && ispunct(c); }
+static inline bool isoperator(const char* c);
+static inline bool potential_operator(const char* c);
 
 static size_t read_large_token(
     register const char* string,
@@ -103,11 +103,11 @@ size_t next_token(register const char* string, register size_t length, token* tk
 
 trie_set operators;
 
-bool isoperator(const char* string) {
+inline bool isoperator(const char* string) {
     return trie_contains(&operators, string);
 }
 
-bool potential_operator(const char* string) {
+inline bool potential_operator(const char* string) {
     return trie_contains_prefix(&operators, string);
 }
 
@@ -129,13 +129,15 @@ size_t read_large_token(
     token* tk,
     char delimiter
 ) {
-    large_token_block* block = &tk->value.large;
+    large_token_block* block;
+    if (tk) {
+        block = &tk->value.large;
+        block->length = 0;
+        block->next = NULL;
+    }
 
     bool escape = false;
-    for (i = 0; escape || string[i + skip] != delimiter; i++) {
-        if (i + skip >= length)
-            exit(-1);
-
+    while (escape || string[i + skip] != delimiter) {
         if (string[i + skip] == '\\')
             escape ^= true;
         else
@@ -144,16 +146,21 @@ size_t read_large_token(
         if (!tk)
             continue;
         
-        if (block->length < sizeof(block->data)) {
-            block->data[i] = string[i + skip];
-            block->length++;
-        } else {
+        if (block->length == sizeof(block->data)) {
             large_token_block* next = (large_token_block*)malloc(sizeof(large_token_block));
             next->length = 0;
             next->next = NULL;
             block->next = next;
             block = next;
         }
+
+        block->data[block->length] = string[i + skip];
+        block->length++;
+
+        i++;
+
+        if (i + skip >= length)
+            exit(-1);  // TODO: Create some kind of error manager
     }
 
     return i;
