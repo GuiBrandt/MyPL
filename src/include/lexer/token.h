@@ -85,7 +85,7 @@ union _token_value {
      * eventually writing them out somewhere else.
      * 
      */
-    struct _block {
+    struct _large_token_block {
         unsigned char length; /**< Block length. */
         char data[255]; /**< Block value. */
 
@@ -94,7 +94,7 @@ union _token_value {
          * This should be 0 if this is the last block on the string.
          * 
          */
-        struct _block* next;  
+        struct _large_token_block* next;  
     } large;
 };
 
