@@ -4,4 +4,6 @@ add_subdirectory(lexer)
 add_subdirectory(parser)
 add_subdirectory(util)
 
-add_subdirectory(tests)
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+    add_subdirectory(tests)
+endif()
