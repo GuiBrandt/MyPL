@@ -1,0 +1,1 @@
+discover_tests(util avl_tree)

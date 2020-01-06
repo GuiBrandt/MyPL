@@ -1,0 +1,3 @@
+add_subdirectory(trie_set)
+add_subdirectory(avl_tree)
+add_subdirectory(splay_tree)
