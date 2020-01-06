@@ -12,6 +12,15 @@ bool issymbol(char c) { return c != '_' && ispunct(c); }
 bool isoperator(const char* c);
 bool potential_operator(const char* c);
 
+size_t read_large_token(
+    register const char* string,
+    register size_t length,
+    register size_t i,
+    size_t skip,
+    token* tk,
+    char delimiter
+);
+
 typedef struct _large_token_block large_token_block;
 
 size_t next_token(register const char* string, register size_t length, token* tk) {
@@ -26,67 +35,16 @@ size_t next_token(register const char* string, register size_t length, token* tk
         register char c = string[i + skip];
 
         if (c == '"' || c == '\'') {
-            large_token_block* block = &tk->value.large;
-
-            bool escape = false;
-
-            for (skip++; escape || string[i + skip] != c; i++) {
-                if (i + skip >= length)
-                    exit(-1);
-
-                if (string[i + skip] == '\\')
-                    escape ^= true;
-                else
-                    escape = false;
-
-                if (!tk)
-                    continue;
-                
-                if (block->length < sizeof(block->data)) {
-                    block->data[i] = string[i + skip];
-                    block->length++;
-                } else {
-                    large_token_block* next = (large_token_block*)malloc(sizeof(large_token_block));
-                    next->length = 0;
-                    next->next = NULL;
-                    block->next = next;
-                    block = next;
-                }
-            }
-            
+            skip++;
+            i = read_large_token(string, length, i, skip, tk, c);
             skip++;
 
             if (tk)
                 tk->type = TOKEN_STRING;
             break;
         } else if (c == '#') {
-            large_token_block* block = &tk->value.large;
-
-            bool escape = false;
-
-            for (skip++; escape || string[i + skip] != '\n'; i++) {
-                if (i + skip >= length)
-                    exit(-1);
-
-                if (string[i + skip] == '\\')
-                    escape ^= true;
-                else
-                    escape = false;
-
-                if (!tk)
-                    continue;
-                
-                if (block->length < sizeof(block->data)) {
-                    block->data[i] = string[i + skip];
-                    block->length++;
-                } else {
-                    large_token_block* next = (large_token_block*)malloc(sizeof(large_token_block));
-                    next->length = 0;
-                    next->next = NULL;
-                    block->next = next;
-                    block = next;
-                }
-            }
+            skip++;
+            i = read_large_token(string, length, i, skip, tk, '\n');
 
             if (tk)
                 tk->type = TOKEN_COMMENT;
@@ -96,7 +54,7 @@ size_t next_token(register const char* string, register size_t length, token* tk
                 break;
 
             skip++;
-            
+
             if (tk)
                 tk->type = TOKEN_LINEBREAK;
             break;
@@ -159,4 +117,42 @@ void __attribute__((constructor)) init_token_sets() {
 
     for (size_t i = 0; i * sizeof(char*) < sizeof(_OPERATORS); i++)
         trie_add(&operators, _OPERATORS[i]);
+}
+
+size_t read_large_token(
+    register const char* string,
+    register size_t length,
+    register size_t i,
+    size_t skip,
+    token* tk,
+    char delimiter
+) {
+    large_token_block* block = &tk->value.large;
+
+    bool escape = false;
+    for (i = 0; escape || string[i + skip] != delimiter; i++) {
+        if (i + skip >= length)
+            exit(-1);
+
+        if (string[i + skip] == '\\')
+            escape ^= true;
+        else
+            escape = false;
+
+        if (!tk)
+            continue;
+        
+        if (block->length < sizeof(block->data)) {
+            block->data[i] = string[i + skip];
+            block->length++;
+        } else {
+            large_token_block* next = (large_token_block*)malloc(sizeof(large_token_block));
+            next->length = 0;
+            next->next = NULL;
+            block->next = next;
+            block = next;
+        }
+    }
+
+    return i;
 }
