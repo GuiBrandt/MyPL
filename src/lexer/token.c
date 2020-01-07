@@ -11,6 +11,8 @@
 
 #include <lexer/token.h>
 
+#include "gperf_literals.h"
+
 static mypl_exception(large_token_no_end);
 
 typedef struct _large_token_block large_token_block;
@@ -106,7 +108,10 @@ size_t next_token(register const char* string, register size_t length, token* tk
         } else if (tk)
             tk->value.small.data[tk->value.small.length++] = c;
     }
-    
+
+    if (tk && isliteral(tk->value.small.data, tk->value.small.length))
+        tk->type = TOKEN_LITERAL;
+
     return i + skip;
 }
 
