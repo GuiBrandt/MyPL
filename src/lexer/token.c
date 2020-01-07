@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include <common/errors.h>
+#include <common/attributes.h>
+
 #include <util/trie_set.h>
 
 #include <lexer/token.h>
@@ -13,10 +15,9 @@ static mypl_exception(large_token_no_end);
 
 typedef struct _large_token_block large_token_block;
 
-static inline bool issymbol(char c) { return c != '_' && ispunct(c); }
-static inline bool isoperator(const char* c);
-static inline bool potential_operator(const char* c);
-
+static bool issymbol(char c) { return c != '_' && ispunct(c); }
+static bool isoperator(const char* c);
+static bool potential_operator(const char* c);
 static size_t read_large_token(
     register const char* string,
     register size_t length,
@@ -128,15 +129,15 @@ void free_large_token_block(large_token_block* block) {
 
 trie_set operators;
 
-inline bool isoperator(const char* string) {
+bool isoperator(const char* string) {
     return trie_contains(&operators, string);
 }
 
-inline bool potential_operator(const char* string) {
+bool potential_operator(const char* string) {
     return trie_contains_prefix(&operators, string);
 }
 
-void __attribute__((constructor)) init_token_sets() {
+constructor(init_token_sets) {
     static const char* _OPERATORS[] = {
         "+", "+=", "-", "-=", "*", "*=", "/", "/=", ">", ">=", "<", "<=", "%",
         "%=", ">>", "<<", ">>=", "<<=", "&", "&=", "|", "|=", "==", "!="
@@ -144,6 +145,10 @@ void __attribute__((constructor)) init_token_sets() {
 
     for (size_t i = 0; i * sizeof(char*) < sizeof(_OPERATORS); i++)
         trie_add(&operators, _OPERATORS[i]);
+}
+
+destructor(free_token_sets) {
+    trie_free(&operators);
 }
 
 size_t read_large_token(
