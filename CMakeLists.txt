@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.12)
 
 project(MyPL VERSION 0.0)
 
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
 endif()
