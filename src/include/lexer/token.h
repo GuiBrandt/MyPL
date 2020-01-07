@@ -106,16 +106,12 @@ typedef struct _token {
 
 /** Consumes the next token on a string.
  * 
- * This function will advance then pointer passed to it up until the start of
- * the next token or the end of the string, as well as change the length
- * pointer accordingly.
- * 
  * @param string the string.
  * @param length the string length.
  * @param out an output pointer to a token. If this is NULL, the token will be
  *            skipped.
  * 
- * @return size_t number of bytes to the next token.
+ * @return size_t number of bytes until the end of the read token.
  * 
  */
 size_t next_token(const char* string, size_t length, token* out);
