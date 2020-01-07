@@ -1,6 +1,5 @@
 #include <assert.h>
 #include <string.h>
-#include <stdio.h>
 
 #include <lexer/token.h>
 
