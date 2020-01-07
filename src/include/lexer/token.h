@@ -49,7 +49,7 @@
  * bytes.
  * 
  */
-enum _token_type {
+typedef enum _token_type {
     TOKEN_NAME      = 0x00,
     TOKEN_KEYWORD   = 0x01,
     TOKEN_SYMBOL    = 0x02,
@@ -59,7 +59,7 @@ enum _token_type {
     TOKEN_LARGE     = 0x20,
     TOKEN_STRING    = TOKEN_LITERAL  | TOKEN_LARGE,
     TOKEN_COMMENT   = TOKEN_LARGE
-};
+} token_type;
 
 /** Token value union. */
 union _token_value {
