@@ -4,13 +4,18 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <common/errors.h>
 #include <util/trie_set.h>
 
 #include <lexer/token.h>
 
-static bool issymbol(char c) { return c != '_' && ispunct(c); }
-static bool isoperator(const char* c);
-static bool potential_operator(const char* c);
+static mypl_exception(large_token_no_end);
+
+typedef struct _large_token_block large_token_block;
+
+static inline bool issymbol(char c) { return c != '_' && ispunct(c); }
+static inline bool isoperator(const char* c);
+static inline bool potential_operator(const char* c);
 
 static size_t read_large_token(
     register const char* string,
@@ -20,8 +25,6 @@ static size_t read_large_token(
     token* tk,
     char delimiter
 );
-
-typedef struct _large_token_block large_token_block;
 
 size_t next_token(register const char* string, register size_t length, token* tk) {
     if (tk) {
@@ -43,19 +46,26 @@ size_t next_token(register const char* string, register size_t length, token* tk
         register char c = string[i + skip];
 
         if (c == '"' || c == '\'') {
-            skip++;
-            i = read_large_token(string, length, i, skip, tk, c);
-            skip++;
+            mypl_catch(large_token_no_end) {
+                mypl_set_last_error(MYPL_ERR_SYNTAX, "Unexpected EOF");
+                return -1;
+            }
 
             if (tk)
                 tk->type = TOKEN_STRING;
+
+            skip++;
+            i = read_large_token(string, length, i, skip, tk, c);
+            skip++;
             break;
         } else if (c == '#') {
-            skip++;
-            i = read_large_token(string, length, i, skip, tk, '\n');
-
+            mypl_catch(large_token_no_end) break;
+            
             if (tk)
                 tk->type = TOKEN_COMMENT;
+
+            skip++;
+            i = read_large_token(string, length, i, skip, tk, '\n');
             break;
         } else if (c == '\n') {
             if (i > 0)
@@ -174,7 +184,7 @@ size_t read_large_token(
         i++;
 
         if (i + skip >= length)
-            exit(-1);  // TODO: Create some kind of error manager
+            mypl_throw(large_token_no_end);
     }
 
     return i;
