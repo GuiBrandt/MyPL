@@ -4,14 +4,16 @@
 #include <lexer/token.h>
 
 int main() {
-    int length = 28;
+    int length = 7;
     char const* string = "abc\nghi";
 
-    next_token(string, length, NULL);
+    size_t i = next_token(string, length, NULL);
+    string += i;
+    length -= i;
 
     token t;
     
-    size_t i = next_token(string, length, &t);
+    i = next_token(string, length, &t);
     string += i;
     length -= i;
 
