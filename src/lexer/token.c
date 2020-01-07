@@ -78,9 +78,6 @@ size_t next_token(register const char* string, register size_t length, token* tk
                 tk->type = TOKEN_LINEBREAK;
             break;
         } else if (isspace(c)) {
-            while (i + skip < length && isspace(string[i + skip]))
-                skip++;
-
             break;
         } else if (issymbol(c)) {
             if (i > 0)
