@@ -1,4 +1,4 @@
-#include "splay_tree.h"
+#include <util/splay_tree.h>
 
 #include <stdlib.h>
 

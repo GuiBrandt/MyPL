@@ -6,11 +6,11 @@
 
 #include <util/trie_set.h>
 
-#include "token.h"
+#include <lexer/token.h>
 
-static inline bool issymbol(char c) { return c != '_' && ispunct(c); }
-static inline bool isoperator(const char* c);
-static inline bool potential_operator(const char* c);
+static bool issymbol(char c) { return c != '_' && ispunct(c); }
+static bool isoperator(const char* c);
+static bool potential_operator(const char* c);
 
 static size_t read_large_token(
     register const char* string,

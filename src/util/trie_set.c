@@ -1,4 +1,4 @@
-#include "trie_set.h"
+#include <util/trie_set.h>
 
 #include <stdlib.h>
 #include <string.h>
