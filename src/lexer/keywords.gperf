@@ -10,6 +10,11 @@
 
 %struct-type
 struct _token_type_lookup_entry { char *name; token_type type; }
+
+%{
+static const struct _token_type_lookup_entry* lookup_token_type(const char*, size_t);
+%}
+
 %%
 if, TOKEN_KEYWORD
 else, TOKEN_KEYWORD

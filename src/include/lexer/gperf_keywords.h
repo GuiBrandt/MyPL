@@ -29,6 +29,9 @@
 #error "gperf generated tables don't work with this execution character set. Please report a bug to <bug-gperf@gnu.org>."
 #endif
 
+#line 14 "src/lexer/keywords.gperf"
+
+static const struct _token_type_lookup_entry* lookup_token_type(const char*, size_t);
 #line 12 "src/lexer/keywords.gperf"
 struct _token_type_lookup_entry { char *name; token_type type; };
 enum
@@ -87,41 +90,41 @@ hash_keyword (register const char *str, register size_t len)
 static const struct _token_type_lookup_entry keywords_list[] =
   {
     {(char*)0}, {(char*)0}, {(char*)0},
-#line 17 "src/lexer/keywords.gperf"
-    {"for", TOKEN_KEYWORD},
-#line 28 "src/lexer/keywords.gperf"
-    {"self", TOKEN_LITERAL},
-#line 26 "src/lexer/keywords.gperf"
-    {"false", TOKEN_LITERAL},
-#line 20 "src/lexer/keywords.gperf"
-    {"struct", TOKEN_KEYWORD},
-#line 14 "src/lexer/keywords.gperf"
-    {"if", TOKEN_KEYWORD},
-#line 21 "src/lexer/keywords.gperf"
-    {"var", TOKEN_KEYWORD},
-#line 25 "src/lexer/keywords.gperf"
-    {"true", TOKEN_LITERAL},
 #line 22 "src/lexer/keywords.gperf"
+    {"for", TOKEN_KEYWORD},
+#line 33 "src/lexer/keywords.gperf"
+    {"self", TOKEN_LITERAL},
+#line 31 "src/lexer/keywords.gperf"
+    {"false", TOKEN_LITERAL},
+#line 25 "src/lexer/keywords.gperf"
+    {"struct", TOKEN_KEYWORD},
+#line 19 "src/lexer/keywords.gperf"
+    {"if", TOKEN_KEYWORD},
+#line 26 "src/lexer/keywords.gperf"
+    {"var", TOKEN_KEYWORD},
+#line 30 "src/lexer/keywords.gperf"
+    {"true", TOKEN_LITERAL},
+#line 27 "src/lexer/keywords.gperf"
     {"const", TOKEN_KEYWORD},
-#line 24 "src/lexer/keywords.gperf"
+#line 29 "src/lexer/keywords.gperf"
     {"import", TOKEN_KEYWORD},
     {(char*)0},
-#line 18 "src/lexer/keywords.gperf"
+#line 23 "src/lexer/keywords.gperf"
     {"continue", TOKEN_KEYWORD},
-#line 27 "src/lexer/keywords.gperf"
+#line 32 "src/lexer/keywords.gperf"
     {"null", TOKEN_LITERAL},
-#line 16 "src/lexer/keywords.gperf"
+#line 21 "src/lexer/keywords.gperf"
     {"while", TOKEN_KEYWORD},
     {(char*)0}, {(char*)0},
-#line 23 "src/lexer/keywords.gperf"
+#line 28 "src/lexer/keywords.gperf"
     {"def", TOKEN_KEYWORD},
-#line 15 "src/lexer/keywords.gperf"
+#line 20 "src/lexer/keywords.gperf"
     {"else", TOKEN_KEYWORD},
-#line 19 "src/lexer/keywords.gperf"
+#line 24 "src/lexer/keywords.gperf"
     {"break", TOKEN_KEYWORD}
   };
 
-static const struct _token_type_lookup_entry *
+const struct _token_type_lookup_entry *
 lookup_token_type (register const char *str, register size_t len)
 {
   if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH)
