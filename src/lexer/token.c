@@ -10,10 +10,12 @@
 #include <util/trie_set.h>
 
 #include <lexer/token.h>
+#include <lexer/gperf_keywords.h>
 
 static mypl_exception(large_token_no_end);
 
 typedef struct _large_token_block large_token_block;
+typedef const struct _token_type_lookup_entry token_type_lookup;
 
 static bool issymbol(char c) { return c != '_' && ispunct(c); }
 static bool isoperator(const char* c);
@@ -106,7 +108,13 @@ size_t next_token(register const char* string, register size_t length, token* tk
         } else if (tk)
             tk->value.small.data[tk->value.small.length++] = c;
     }
-    
+
+    if (tk) {
+        token_type_lookup *lookup = lookup_token_type(tk->value.small.data, tk->value.small.length);
+        if (lookup)
+            tk->type = lookup->type;
+    }
+
     return i + skip;
 }
 

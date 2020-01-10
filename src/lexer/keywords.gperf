@@ -1,0 +1,33 @@
+%global-table
+%null-strings
+%readonly-tables
+%compare-strncmp
+%enum
+
+%define word-array-name keywords_list
+%define hash-function-name hash_keyword
+%define lookup-function-name lookup_token_type
+
+%struct-type
+struct _token_type_lookup_entry { char *name; token_type type; }
+
+%{
+static const struct _token_type_lookup_entry* lookup_token_type(const char*, size_t);
+%}
+
+%%
+if, TOKEN_KEYWORD
+else, TOKEN_KEYWORD
+while, TOKEN_KEYWORD
+for, TOKEN_KEYWORD
+continue, TOKEN_KEYWORD
+break, TOKEN_KEYWORD
+struct, TOKEN_KEYWORD
+var, TOKEN_KEYWORD
+const, TOKEN_KEYWORD
+def, TOKEN_KEYWORD
+import, TOKEN_KEYWORD
+true, TOKEN_LITERAL
+false, TOKEN_LITERAL
+null, TOKEN_LITERAL
+self, TOKEN_LITERAL
